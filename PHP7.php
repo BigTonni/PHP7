@@ -83,4 +83,54 @@ echo 'Odd numbers using xrange(): ';
 foreach (xrange(1, 9, 2) as $number) {
     echo "$number ";
 }
+//Example 2
+function getNum() {
+    for ($i = 0; $i < 5; $i++) {
+        yield $i;
+    }
+}
+foreach (getNum() as $v){
+    echo $v; // "01234"
+}
+
+//8 - Late Static Bindings
+class MyParent {
+
+    protected static $val = 'parent';
+
+    public static function getVal() {
+        return self::$val;
+    }
+
+}
+
+class MyChild extends MyParent {
+
+    protected static $val = 'child';
+
+}
+
+echo MyChild::getVal(); // "parent"
+/* * * */
+class MyParentNew {
+
+    protected static $val = 'parent';
+
+    public static function getLateBindingVal() {
+        return static::$val;
+    }
+
+}
+
+class MyChildNew extends MyParentNew {
+
+    protected static $val = 'child';
+
+}
+
+echo MyChildNew::getLateBindingVal(); // "child"
+
+//9 - Consts and Define
+const CA = [1, 2, 3]; // PHP 5.6 or later
+define('DA', [1, 2, 3]); // PHP 7 or later
 ?>
