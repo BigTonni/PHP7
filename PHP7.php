@@ -133,4 +133,134 @@ echo MyChildNew::getLateBindingVal(); // "child"
 //9 - Consts and Define
 const CA = [1, 2, 3]; // PHP 5.6 or later
 define('DA', [1, 2, 3]); // PHP 7 or later
+
+//10 - Traits
+trait PrintFunctionality {
+
+    public function myPrint() {
+        echo 'Hello';
+    }
+
+}
+
+class MyClass {
+// Insert trait methods
+    use PrintFunctionality;
+}
+
+$o = new MyClass();
+$o->myPrint(); // "Hello"
+
+//11 - Return Type Declarations
+interface I {
+    static function myArray(array $a): array;
+}
+class C implements I {
+    static function myArray(array $a): array {
+        return $a;
+    }
+}
+
+//12 - Null Coalescing Operator
+$x = null;
+//before php 7
+$name = isset($x) ? $x : 'unknown';
+//after
+$name = $x ?? 'unknown'; // "unknown"
+
+//13 - Property Overloading
+class MyProperties
+{
+    private $data = array();
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->data))
+            return $this->data[$name];
+    }
+}
+$obj = new MyProperties();
+$obj->a = 1; // __set called
+echo $obj->a; // __get called
+
+//14 - Method Overloading
+class MyClass
+{
+    public function __call($name, $args)
+    {
+        echo "Calling $name $args[0]";
+    }
+}
+// "Calling myTest in object context"
+(new MyClass())->myTest('in object context');
+
+//Vers for  __callStatic()
+class MyClass
+{
+    public static function __callStatic($name, $args)
+    {
+        echo "Calling $name $args[0]";
+    }
+}
+// "Calling myTest in static context"
+MyClass::myTest('in static context');
+
+//15 - Isset and unset Overloading
+class MyClass
+{
+    private $data = array();
+    public function __set($name, $value) {
+        $this->data[$name] = $value;
+    }
+    public function __get($name) {
+        if (array_key_exists($name, $this->data))
+        return $this->data[$name];
+    }
+    public function __isset($name) {
+        return isset($this->data[$name]);
+    }
+    public function __unset($name) {
+        unset( $this->data[$name] );
+    }
+}
+
+$obj = new MyClass();
+$obj->name = "Joe";
+isset($obj->name); // true
+isset($obj->age); // false
+
+unset($obj->name); // delete property
+isset($obj->name); // false
+
+//16 - Magic methods
+// _ToString - Called for object to string conversions.
+class MyClass
+{
+    public function __toString()
+    {
+        return 'Instance of ' . __CLASS__;
+    }
+}
+$obj = new MyClass();
+echo $obj; // "Instance of MyClass"
+
+//_Invoke - Called for object to function conversions.
+class MyClass
+{
+    public function __invoke($arg)
+    {
+        echo $arg;
+    }
+}
+$obj = new MyClass();
+$obj('Test'); // "Test"
+
+// ** Other **
+//__sleep() - Called by serialize . Performs cleanup tasks and returns an array of variables to be serialized.
+//__wakeup() - Called by unserialize to reconstruct the object.
+//__set_state($array) - Called by var_export . The method must be static and its argument contains the exported properties.
+//__clone() - Called after object has been cloned.
 ?>
