@@ -1,2 +1,4 @@
 https://github.com/tpunt/PHP7-Reference
 https://github.com/tpunt/PHP7-Reference/blob/master/php71-reference.md
+
+http://www.skillz.ru/dev/php/article-php71-whats-new.html
